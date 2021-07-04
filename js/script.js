@@ -3,6 +3,8 @@ const username = "gerardguydavis";
 const repoList = document.querySelector(".repo-list");
 const repoSect = document.querySelector(".repos");
 const repoData = document.querySelector(".repo-data");
+const backButton = document.querySelector(".view-repos");
+const filterInput = document.querySelector(".filter-repos");
 
 //To pull profile info
 const githubFetch = async function () {
@@ -40,6 +42,7 @@ const repoFetch = async function () {
 };
 
 const displayRepos = function (repos) {
+    filterInput.classList.remove("hide");
     for (let repo of repos) {
     const li = document.createElement("li");
     li.classList.add("repo");
@@ -82,5 +85,26 @@ const displayInfo = function (repoInfo, languages) {
     repoData.append(showInfo);
     repoData.classList.remove("hide");
     repoSect.classList.add("hide");
+    backButton.classList.remove("hide");
 }
-    
+
+backButton.addEventListener("click", function () {
+    repoSect.classList.remove("hide");
+    repoData.classList.add("hide");
+    backButton.classList.add("hide");
+})
+
+filterInput.addEventListener("input", function (e) {
+    let search = e.target.value;
+    const repos = document.querySelectorAll(".repo");
+    let smallSearch = search.toLowerCase();
+
+    for (const repo of repos) {
+        const smallRepo = repo.innerText.toLowerCase();
+        if (smallRepo.includes(smallSearch)) {
+            repo.classList.remove("hide")
+    } else {
+        repo.classList.add("hide");
+    }
+}
+});
